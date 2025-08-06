@@ -36,8 +36,7 @@ export function App() {
 
 /* 
 Co do zrobienia następnie:
-- stylowanie containerów z wygenerowanymi pytaniami i odpowiedziami ---> ZROBIONE
-- wybór odpowiedzi i umieszczenie ich w osobnej tablicy do późniejszego porównywania ---> NASTĘPNE DO ZROBIENIA
+- zablokować mechanizm mieszania kolejności odpowiedzi po wyborze i zapisie odpowiedzi w tablicy ---> DO ZROBIENIA!
 - zmiana stylowania przycisku, gdy zostanie zaznaczony, wyłączenie pozostałych przycisków odpowiedzi dla danego pytania
 - warunkowe wyświetlanie przycisku sprawdzenia odpowiedzi (dopiero jak zostaną udzielone wszystkie odpowiedzi)
 - sprawdzenie ile udzielonych odpowiedzi jest poprawnych
