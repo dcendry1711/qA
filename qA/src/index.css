@@ -96,3 +96,8 @@ main {
   font-weight: bold;
 }
 
+.answer-btn.selected {
+  border: 3px solid red;
+}
+
+

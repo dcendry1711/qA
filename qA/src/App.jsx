@@ -36,7 +36,7 @@ export function App() {
 
 /* 
 Co do zrobienia następnie:
-- zablokować mechanizm mieszania kolejności odpowiedzi po wyborze i zapisie odpowiedzi w tablicy ---> DO ZROBIENIA!
+- wyłączenie pozostałych przycisków po wybraniu odpowiedzi ---> DO ZROBIENIA
 - zmiana stylowania przycisku, gdy zostanie zaznaczony, wyłączenie pozostałych przycisków odpowiedzi dla danego pytania
 - warunkowe wyświetlanie przycisku sprawdzenia odpowiedzi (dopiero jak zostaną udzielone wszystkie odpowiedzi)
 - sprawdzenie ile udzielonych odpowiedzi jest poprawnych

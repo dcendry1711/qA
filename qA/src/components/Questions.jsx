@@ -1,85 +1,73 @@
 import { decode } from 'html-entities'
 import { useState, useEffect } from 'react'
+import clsx from 'clsx'
 
-export function Questions(props){
+export function Questions(props) {
 
-    const [myAnswers, setMyAnswers] = useState([]) // tablica przechowująca moje odpowiedzi do pytań
+    const [myAnswers, setMyAnswers] = useState([]) // moje odpowiedzi
+    const [shuffledData, setShuffledData] = useState([]) // dane z przetasowanymi odpowiedziami
 
-      
-    // Mechanizmy w komponencie
-
-    const questions = props.data.map( (object,index) => {
-
-        const decodedQuestion = decode(object.question) // odkodowanie treści pytań
-        
-        // utworzenie tablicy przechowującej błędne oraz poprawną odpowiedź oraz jej pomieszanie
-
-        const allAnswers = shuffleAnswers([
-            ...object.incorrect_answers,
-            object.correct_answer
-        ])
-
-        //funkcja mieszająca kolejność odpowiedzi w tablicy
-
-        function shuffleAnswers(arr){
-            const copy = [...arr]
-            for (let i = copy.length - 1 ; i > 0 ; i--){
-                const rand = Math.floor(Math.random() * (i+1));
-                [copy[i],copy[rand]] = [copy[rand],copy[i]] 
+    // Tasowanie odpowiedzi tylko raz przy załadowaniu danych
+    useEffect(() => {
+        const shuffled = props.data.map((object) => {
+            const answers = shuffleAnswers([
+                ...object.incorrect_answers,
+                object.correct_answer
+            ])
+            return {
+                ...object,
+                shuffledAnswers: answers
             }
-            return copy
+        })
+        setShuffledData(shuffled)
+    }, [props.data])
+
+    // Funkcja mieszająca tablicę
+    function shuffleAnswers(arr) {
+        const copy = [...arr]
+        for (let i = copy.length - 1; i > 0; i--) {
+            const rand = Math.floor(Math.random() * (i + 1))
+            ;[copy[i], copy[rand]] = [copy[rand], copy[i]]
         }
+        return copy
+    }
 
-        //funkcja zapisująca w tablicy myAnswers moje odpowiedzi do pytań
-
-        function saveAnswer(ans){
-            if (!myAnswers.includes(ans)){
-            setMyAnswers(prevAns => [...prevAns, ans])
-            }
+    function saveAnswer(ans) {
+        if (!myAnswers.includes(ans)) {
+            setMyAnswers((prevAns) => [...prevAns, ans])
         }
+    }
 
-        //funkcja wyświetlająca odpowiedzi (pomieszane)
+    // Render pytań i odpowiedzi
+    const questions = shuffledData.map((object, index) => {
 
-        function renderAnswers(){
+        const decodedQuestion = decode(object.question)
 
-            return allAnswers.map( (answer,index) => {
-
-                const isMyAnsArrTure = myAnswers.length > 0 // sprawdzanie czy tablica odpowiedzi zawiera elementy
-                const isMyAnsInArr = isMyAnsArrTure && myAnswers.includes(answer) // sprawdza czy odpowiedź została umieszczona w tablicy odpowiedzi myAnswers
+        function renderAnswers() {
+            return object.shuffledAnswers.map((answer, idx) => {
 
                 const decodedAnswer = decode(answer)
-
-                return(
+                const ansIsSelected = myAnswers.includes(decodedAnswer)
+                
+                return (
                     <button
-                        onClick={()=>saveAnswer(decodedAnswer)} 
-                        className="answer-btn" 
-                        key={index}
+                        onClick={() => saveAnswer(decodedAnswer)}
+                        className={clsx("answer-btn", ansIsSelected && 'selected')}
+                        key={idx}
                     >
                         {decodedAnswer}
                     </button>
-                ) 
-                
+                )
             })
-            
         }
 
-        // Zwrotka kontenera z pytaniem i dostępnymi odpowiedziami
-
-        return(
+        return (
             <section key={index} className="question-container">
-                <h2 key={object.question} className="question-heading">{decodedQuestion}</h2>
-                <div className="answers-container">
-                    {renderAnswers()}
-                </div>
+                <h2 className="question-heading">{decodedQuestion}</h2>
+                <div className="answers-container">{renderAnswers()}</div>
             </section>
         )
     })
 
-    // Zwrotka komponentu dla App
-
-    return(
-        <>
-            {questions}
-        </>
-    )
+    return <>{questions}</>
 }
