@@ -1,0 +1,98 @@
+/*ZASTOSOWANIE DLA CALEGO DOKUMENTU*/
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Karla", sans-serif;
+}
+
+/* Ustawienie BODY */
+
+body {
+  background: linear-gradient(lightblue, #FFF);
+  height: 120vh;
+}
+
+/*Header - ekran rozpoczęcia gry */
+
+header {
+  display: flex;
+  margin-top: 14em;
+  gap: 1em;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-title {
+  font-size: 62px;
+  font-weight: bold;
+  color: #293264;
+}
+
+.title-paragraph {
+  font-family: "Inter", sans-serif;
+  text-decoration: underline;
+  color: #293264;
+}
+
+.start-game-btn {
+  max-width: 600px;
+  background: #293264;
+  border: none;
+  color: #FFF;
+  padding: 1.5em 3em;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.start-game-btn:hover {
+  background: #FFF;
+  color:#293264;
+  border: 2px solid #293264;
+  font-weight: bold;
+  opacity: .4;
+}
+
+/* Ekran z pytaniami (component questions) */
+
+main {
+  padding: 1em 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.question-container {
+  max-width: 800px;
+  display: flex;
+  gap: 1.5em;
+  margin: 1em 0;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #232323;
+  border-radius: 10px;
+  padding: 1em;
+  box-shadow: 1px 1px 1px 1px;
+}
+
+.answers-container {
+  display: flex;
+  gap: .3em;
+  width: 90%;
+  justify-content: space-evenly;
+}
+
+.answer-btn {
+  background: none;
+  border-radius: 7px;
+  padding: .5em 1em;
+  cursor: pointer;
+}
+
+.answer-btn:hover {
+  background: lightskyblue;
+  font-weight: bold;
+}
+
