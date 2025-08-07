@@ -4,70 +4,81 @@ import clsx from 'clsx'
 
 export function Questions(props) {
 
-    const [myAnswers, setMyAnswers] = useState([]) // moje odpowiedzi
-    const [shuffledData, setShuffledData] = useState([]) // dane z przetasowanymi odpowiedziami
+    const [allData, setAllData] = useState([])
+    const [myAnswers, setMyAnswers] = useState([])
+    console.log(myAnswers)
 
-    // Tasowanie odpowiedzi tylko raz przy załadowaniu danych
-    useEffect(() => {
-        const shuffled = props.data.map((object) => {
-            const answers = shuffleAnswers([
-                ...object.incorrect_answers,
-                object.correct_answer
-            ])
-            return {
-                ...object,
-                shuffledAnswers: answers
-            }
+    /*
+        useEffect - dla każdego obiektu tworzy właściwość "possibleAnswers" zawierającą możliwe odpowiedzi (questionAnswers). Wszystko jest przechowane w tablicy avAns, która jest przekazana do state "allANs" 
+        do tego w trakcie tworzenia tablicy ze wszystkimi odpowiedziami następuje ich pomieszanie za pomocą funkcji shuffleAnswers
+    */
+
+    useEffect(()=>{
+        const avAns = props.data.map( q => {
+            const questionAnswers = shuffleAnswers([...q.incorrect_answers, q.correct_answer])
+        return {
+            ...q,
+            possibleAnswers: questionAnswers
+        }
         })
-        setShuffledData(shuffled)
-    }, [props.data])
+        setAllData(avAns)
+    },[props.data])
 
-    // Funkcja mieszająca tablicę
-    function shuffleAnswers(arr) {
+
+    //funkcja do mieszania odpowiedzi w obiekcie
+
+    function shuffleAnswers(arr){
         const copy = [...arr]
-        for (let i = copy.length - 1; i > 0; i--) {
-            const rand = Math.floor(Math.random() * (i + 1))
-            ;[copy[i], copy[rand]] = [copy[rand], copy[i]]
+        for (let i = copy.length - 1 ; i > 0 ; i--){
+            const j = Math.floor(Math.random() * (i+1));
+            [copy[i],copy[j]] = [copy[j],copy[i]]
         }
         return copy
     }
 
-    function saveAnswer(ans) {
-        if (!myAnswers.includes(ans)) {
-            setMyAnswers((prevAns) => [...prevAns, ans])
-        }
-    }
+    //Odkodowanie odpowiedzi i wyświetlenie pytań w komponencie
 
-    // Render pytań i odpowiedzi
-    const questions = shuffledData.map((object, index) => {
+    const question = allData.map( object => {
 
         const decodedQuestion = decode(object.question)
 
-        function renderAnswers() {
-            return object.shuffledAnswers.map((answer, idx) => {
-
-                const decodedAnswer = decode(answer)
-                const ansIsSelected = myAnswers.includes(decodedAnswer)
-                
-                return (
-                    <button
-                        onClick={() => saveAnswer(decodedAnswer)}
-                        className={clsx("answer-btn", myAnswers.length > 0 && ansIsSelected && 'selected', myAnswers.length > 0 && !ansIsSelected && 'disabled')}
-                        key={idx}
-                    >
-                        {decodedAnswer}
-                    </button>
-                )
-            })
+        function addAnswerToArr(answer){
+             if(!myAnswers.includes(answer)){
+                 setMyAnswers(prev => [...prev,answer])
+             }
         }
 
-        return (
-            <section key={index} className="question-container">
-                <h2 className="question-heading">{decodedQuestion}</h2>
-                <div className="answers-container">{renderAnswers()}</div>
+        return(
+            <section key={decodedQuestion} className="single-question">
+                <h2>{decodedQuestion}</h2>
+                <div className="answers-container">
+                    {object.possibleAnswers.map(ans => {
+
+                        // stylowanie warunkowe odpowiedzi i ogólne warunki dla odpowiedzi
+
+                        const ansIsSelected = myAnswers.length > 0 && myAnswers.includes(ans)
+                        const classNameBtn = clsx('single-button', ansIsSelected && 'selected')
+
+                        return(
+                            <button 
+                                onClick={() => addAnswerToArr(ans)} 
+                                className={classNameBtn} 
+                                key={ans}>
+                                    {ans}
+                            </button>
+                        )
+                    })}
+                </div>
             </section>
         )
     })
 
-    return <>{questions}</>
+    //Zwracane elementy z powyższego kodu do APP
+
+    return(
+        <>
+            {question}
+            {myAnswers.length === 5 && <button className="check-ans-btn">Check My Answers</button>}
+        </>
+    )
 }

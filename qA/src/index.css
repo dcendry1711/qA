@@ -64,44 +64,51 @@ main {
   align-items: center;
 }
 
-.question-container {
-  max-width: 800px;
-  display: flex;
-  gap: 1.5em;
-  margin: 1em 0;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid #232323;
-  border-radius: 10px;
+
+/*Sekcja pojedynczego pytania */
+
+.single-question {
+  border: 1px solid black;
+  border-radius: 15px;
+  min-width: 700px;
+  margin: 1em 1.5em;
   padding: 1em;
+  text-align: center;
   box-shadow: 1px 1px 1px 1px;
 }
 
+/*div dla odpowiedzi */
+
 .answers-container {
   display: flex;
-  gap: .3em;
+  justify-content: center;
+  gap: .9em;
   width: 90%;
-  justify-content: space-evenly;
+  margin: .7em auto 0;
 }
 
-.answer-btn {
+/*stylowanie przycisku odpowiedzi */
+
+.single-button {
   background: none;
-  border-radius: 7px;
-  padding: .5em 1em;
+  padding: .5em .7em;
   cursor: pointer;
 }
 
-.answer-btn:hover {
-  background: lightskyblue;
+.single-button.selected {
+  border: 2px solid red;
+}
+
+.single-button:hover{
+  border: 1px solid #232323;
   font-weight: bold;
 }
 
-.answer-btn.selected {
-  border: 3px solid red;
+/*Przycisk Sprawdzania odpowiedzi */
+
+.check-ans-btn {
+  margin: 2em 0;
+  background: none;
+  padding: 1em 2em;
+  cursor: pointer;
 }
-
-.answer-btn.disabled {
-  cursor: not-allowed;
-}
-
-
