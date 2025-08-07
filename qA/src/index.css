@@ -100,4 +100,8 @@ main {
   border: 3px solid red;
 }
 
+.answer-btn.disabled {
+  cursor: not-allowed;
+}
+
 

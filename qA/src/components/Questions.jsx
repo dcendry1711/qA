@@ -52,7 +52,7 @@ export function Questions(props) {
                 return (
                     <button
                         onClick={() => saveAnswer(decodedAnswer)}
-                        className={clsx("answer-btn", ansIsSelected && 'selected')}
+                        className={clsx("answer-btn", myAnswers.length > 0 && ansIsSelected && 'selected', myAnswers.length > 0 && !ansIsSelected && 'disabled')}
                         key={idx}
                     >
                         {decodedAnswer}
