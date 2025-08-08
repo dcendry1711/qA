@@ -19,7 +19,7 @@ export function App() {
   useEffect(() => {
     setLoadingGame(true)
     if (isGameStarted) {
-    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy')
+    fetch('https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple')
       .then(res => res.json())
       .then(resp => setData(resp.results))
     setLoadingGame(false)
@@ -29,7 +29,7 @@ export function App() {
   return (
     <main>
       { !isGameStarted && <Header startGame = {startGame}/> }
-      { !loadingGame && <Questions data = {data}/>}
+      { !loadingGame && <Questions isGameStarted={isGameStarted} data = {data}/>}
     </main>
   )
 }

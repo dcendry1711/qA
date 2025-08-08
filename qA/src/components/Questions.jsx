@@ -6,7 +6,21 @@ export function Questions(props) {
 
     const [allData, setAllData] = useState([])
     const [myAnswers, setMyAnswers] = useState([])
-    console.log(myAnswers)
+    const [finalResult, setFinalResult] = useState()
+    
+    const correctAnswers = allData.map( qob => {
+        return qob.correct_answer
+    })
+
+    function showResult(){
+        let result = 0
+        for (let i = 0 ; i < myAnswers.length ; i++){
+            if(correctAnswers.includes(myAnswers[i])){
+                result++
+            }
+        }
+        setFinalResult(result)
+    }
 
     /*
         useEffect - dla każdego obiektu tworzy właściwość "possibleAnswers" zawierającą możliwe odpowiedzi (questionAnswers). Wszystko jest przechowane w tablicy avAns, która jest przekazana do state "allANs" 
@@ -56,6 +70,7 @@ export function Questions(props) {
 
                         // stylowanie warunkowe odpowiedzi i ogólne warunki dla odpowiedzi
 
+                        const decodeAnswer = decode(ans)
                         const ansIsSelected = myAnswers.length > 0 && myAnswers.includes(ans)
                         const classNameBtn = clsx('single-button', ansIsSelected && 'selected')
 
@@ -64,7 +79,7 @@ export function Questions(props) {
                                 onClick={() => addAnswerToArr(ans)} 
                                 className={classNameBtn} 
                                 key={ans}>
-                                    {ans}
+                                    {decodeAnswer}
                             </button>
                         )
                     })}
@@ -78,7 +93,14 @@ export function Questions(props) {
     return(
         <>
             {question}
-            {myAnswers.length === 5 && <button className="check-ans-btn">Check My Answers</button>}
+            {myAnswers.length === 5 && <button onClick={showResult} className="check-ans-btn">Check My Answers</button>}
+            {finalResult && 
+                <section>
+                    <p>Your result: {finalResult}/{myAnswers.length} correct</p> 
+                        <br></br>
+                    <p>Correct answers: {correctAnswers.map(ans => {return ans}).join('/ ')}</p>
+                </section>
+            }
         </>
     )
 }
